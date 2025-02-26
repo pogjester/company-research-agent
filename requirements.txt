@@ -60,3 +60,4 @@ python-multipart==0.0.9
 starlette==0.36.3
 pymongo>=4.0.1
 google-generativeai==0.8.4
+reportlab>=4.0.1
