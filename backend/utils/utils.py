@@ -1,4 +1,3 @@
-import markdown
 import logging
 import os
 import re
@@ -8,7 +7,6 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, ListFlowable, ListItem
-import tempfile
 
 
 def extract_domain_name(url: str) -> str:
@@ -34,34 +32,18 @@ logger = logging.getLogger(__name__)
 
 def clean_text(text: str) -> str:
     """Clean up text by replacing escaped quotes and other special characters."""
-    # Remove any trailing JSON artifacts
     text = re.sub(r'",?\s*"pdf_url":.+$', '', text)
-    # Replace escaped quotes with regular quotes
     text = text.replace('\\"', '"')
-    # Convert literal \n to actual newlines
     text = text.replace('\\n', '\n')
-    # Remove any XML/para tags
     text = text.replace('<para>', '').replace('</para>', '')
     return text.strip()
 
 def generate_pdf_from_md(markdown_content: str, output_pdf: str) -> None:
     """Convert markdown content to PDF using a simplified ReportLab approach."""
     try:
-        # Ensure output directory exists
         os.makedirs(os.path.dirname(os.path.abspath(output_pdf)), exist_ok=True)
-        
-        # Normalize line endings
         markdown_content = markdown_content.replace('\r\n', '\n')  # Normalize Windows line endings
         markdown_content = markdown_content.replace('\\n', '\n')   # Convert literal \n to newlines
-        
-        # Extract company name from the first line
-        company_name = "Company Research Report"
-        first_line = markdown_content.split('\n')[0].strip()
-        if first_line.startswith('# '):
-            company_name = first_line[2:].strip()
-        
-        # Current date for the footer
-        current_date = datetime.datetime.now().strftime("%B %d, %Y")
         
         # Create the PDF document
         doc = SimpleDocTemplate(

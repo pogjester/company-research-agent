@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 from datetime import datetime
 from typing import Dict, Any, Optional
-import os
 import certifi
 
 class MongoDBService:

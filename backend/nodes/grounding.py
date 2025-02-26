@@ -2,7 +2,6 @@ from langchain_core.messages import AIMessage
 from tavily import AsyncTavilyClient
 import os
 import logging
-from typing import Dict, Any, List
 from ..classes import InputState, ResearchState
 
 logger = logging.getLogger(__name__)
@@ -115,10 +114,8 @@ class GroundingNode:
         # Add context about what information we have
         context_data = {}
         if hq := state.get('hq_location'):
-            msg += f"\n📍 Company HQ: {hq}"
             context_data["hq_location"] = hq
         if industry := state.get('industry'):
-            msg += f"\n🏭 Industry: {industry}"
             context_data["industry"] = industry
         
         # Initialize ResearchState with input information

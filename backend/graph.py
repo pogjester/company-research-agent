@@ -116,11 +116,6 @@ class Graph:
             update
         )
     
-    # Compile for langgraph studio
     def compile(self):
-        # Use a consistent thread ID for state persistence
-        thread = {"configurable": {"thread_id": "2"}}
-
-        # Compile the workflow with checkpointer and interrupt configuration
         graph = self.workflow.compile()
         return graph

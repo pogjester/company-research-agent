@@ -1,7 +1,6 @@
 import logging
 import os
 import re
-import urllib.parse
 from fastapi import HTTPException
 from backend.utils.utils import (
     generate_pdf_from_md,

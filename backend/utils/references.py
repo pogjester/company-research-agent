@@ -73,13 +73,8 @@ def clean_title(title: str) -> str:
     
     original_title = title
     
-    # Remove any trailing periods or quotes
     title = title.strip().rstrip('.').strip('"\'')
-    
-    # Remove date patterns like "2024 - 10 - 03 -" or "2024-10-03-" or similar variations
     title = re.sub(r'^\d{4}[-\s]*\d{1,2}[-\s]*\d{1,2}[-\s]*', '', title)
-    
-    # Remove any leading/trailing hyphens and whitespace after date removal
     title = title.strip('- ').strip()
     
     # If title became empty after cleaning, return empty string
