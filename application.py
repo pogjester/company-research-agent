@@ -3,7 +3,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 from backend.graph import Graph
-from backend.utils.utils import generate_pdf_from_md
 from backend.services.websocket_manager import WebSocketManager
 from dotenv import load_dotenv
 import logging
@@ -41,11 +40,10 @@ app = FastAPI(title="Tavily Company Research API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5174", "http://localhost:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
-    expose_headers=["*"]
 )
 
 manager = WebSocketManager()

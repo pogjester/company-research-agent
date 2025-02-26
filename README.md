@@ -177,6 +177,45 @@ OPENAI_API_KEY=your_openai_key
 # MONGODB_URI=your_mongodb_connection_string
 ```
 
+### Docker Setup 🐳
+
+The application can be run using Docker and Docker Compose:
+
+1. Clone the repository:
+```bash
+git clone https://github.com/pogjester/tavily-company-research.git
+cd tavily-company-research
+```
+
+2. Create a `.env` file with your API keys:
+```env
+TAVILY_API_KEY=your_tavily_key
+GEMINI_API_KEY=your_gemini_key
+OPENAI_API_KEY=your_openai_key
+
+# Optional: Enable MongoDB persistence
+# MONGODB_URI=your_mongodb_connection_string
+```
+
+3. Build and start the containers:
+```bash
+docker compose up --build
+```
+
+This will start both the backend and frontend services:
+- Backend API will be available at `http://localhost:8000`
+- Frontend will be available at `http://localhost:5174`
+
+To stop the services:
+```bash
+docker compose down
+```
+
+Note: When updating environment variables in `.env`, you'll need to restart the containers:
+```bash
+docker compose down && docker compose up
+```
+
 ### Running the Application
 
 1. Start the backend server (choose one):
@@ -254,7 +293,6 @@ The application can be deployed to various cloud platforms. Here are some common
 - **Docker**: The application includes a Dockerfile for containerized deployment
 - **Heroku**: Deploy directly from GitHub with the Python buildpack
 - **Google Cloud Run**: Suitable for containerized deployment with automatic scaling
-- **DigitalOcean App Platform**: Simple deployment with GitHub integration
 
 Choose the platform that best suits your needs. The application is platform-agnostic and can be hosted anywhere that supports Python web applications.
 
