@@ -1,12 +1,16 @@
+from dotenv import load_dotenv
+import os
+
+# Load environment variables before any other imports
+load_dotenv()
+
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 from backend.graph import Graph
 from backend.services.websocket_manager import WebSocketManager
-from dotenv import load_dotenv
 import logging
-import os
 import uvicorn
 from datetime import datetime
 import asyncio
@@ -18,8 +22,6 @@ from backend.services.pdf_service import PDFService
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-load_dotenv()
 
 REPORTS_DIR = "reports"
 os.makedirs(REPORTS_DIR, exist_ok=True)
