@@ -6,6 +6,7 @@ from ...classes import ResearchState
 from typing import Dict, Any, List
 import logging
 from ...utils.references import clean_title
+import asyncio
 
 logger = logging.getLogger(__name__)
 
@@ -247,8 +248,7 @@ class BaseResearcher:
 
     async def search_documents(self, state: ResearchState, queries: List[str]) -> Dict[str, Any]:
         """
-        Instead of batching and running parallel searches,
-        simply output "Using Tavily search..." and iterate over each query one by one.
+        Execute multiple Tavily searches in parallel using asyncio.gather
         """
         websocket_manager = state.get('websocket_manager')
         job_id = state.get('job_id')
@@ -265,9 +265,16 @@ class BaseResearcher:
             logger.error("No valid queries to search")
             return {}
 
+        # Run all searches in parallel
+        search_tasks = [
+            self.search_single_query(query, websocket_manager, job_id)
+            for query in queries
+        ]
+        search_results = await asyncio.gather(*search_tasks)
+        
+        # Merge all results
         merged_docs = {}
-        for query in queries:
-            docs = await self.search_single_query(query, websocket_manager, job_id)
+        for docs in search_results:
             merged_docs.update(docs)
         
         if websocket_manager and job_id:
