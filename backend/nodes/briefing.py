@@ -107,7 +107,7 @@ Key requirements:
 
 ### Funding & Investment
 * Total funding amount with date
-* List each funding round with date
+* List each funding round with date (being careful to not repeat the same round)
 * List named investors
 
 ### Revenue Model
