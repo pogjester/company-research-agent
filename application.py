@@ -7,12 +7,13 @@ env_path = Path(__file__).parent / '.env'
 if env_path.exists():
     load_dotenv(dotenv_path=env_path, override=True)
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel
 from backend.graph import Graph
 from backend.services.websocket_manager import WebSocketManager
+from backend.utils.auth import verify_api_key
 import logging
 import uvicorn
 from datetime import datetime
@@ -82,7 +83,7 @@ async def preflight():
     return response
 
 @app.post("/research")
-async def research(data: ResearchRequest):
+async def research(data: ResearchRequest, _: bool = Depends(verify_api_key)):
     try:
         logger.info(f"Received research request for {data.company}")
         job_id = str(uuid.uuid4())
@@ -211,7 +212,7 @@ async def websocket_endpoint(websocket: WebSocket, job_id: str):
         manager.disconnect(websocket, job_id)
 
 @app.get("/research/{job_id}")
-async def get_research(job_id: str):
+async def get_research(job_id: str, _: bool = Depends(verify_api_key)):
     if not mongodb:
         raise HTTPException(status_code=501, detail="Database persistence not configured")
     job = mongodb.get_job(job_id)
@@ -220,7 +221,7 @@ async def get_research(job_id: str):
     return job
 
 @app.get("/research/{job_id}/report")
-async def get_research_report(job_id: str):
+async def get_research_report(job_id: str, _: bool = Depends(verify_api_key)):
     if not mongodb:
         if job_id in job_status:
             result = job_status[job_id]
@@ -234,11 +235,11 @@ async def get_research_report(job_id: str):
     return report
 
 @app.post("/research/{job_id}/generate-pdf")
-async def generate_pdf(job_id: str):
+async def generate_pdf(job_id: str, _: bool = Depends(verify_api_key)):
     return pdf_service.generate_pdf_from_job(job_id, job_status, mongodb)
 
 @app.post("/generate-pdf")
-async def generate_pdf(data: GeneratePDFRequest):
+async def generate_pdf(data: GeneratePDFRequest, _: bool = Depends(verify_api_key)):
     """Generate a PDF from markdown content and stream it to the client."""
     try:
         success, result = pdf_service.generate_pdf_stream(data.report_content, data.company_name)

@@ -16,6 +16,7 @@ import {
   GlassStyle,
   AnimationStyle
 } from './types';
+import { getApiKey } from './services/auth';
 
 const API_URL = import.meta.env.VITE_API_URL;
 const WS_URL = import.meta.env.VITE_WS_URL;
@@ -27,6 +28,18 @@ if (!API_URL || !WS_URL) {
 }
 
 // Add this near your other styles at the top of the file
+const writingAnimation = `
+@keyframes writing {
+  0% { width: 0; }
+  100% { width: 100%; }
+}
+
+.animate-writing {
+  animation: writing 1s ease-in-out forwards;
+  overflow: hidden;
+  white-space: nowrap;
+}`;
+
 const colorAnimation = `
 @keyframes colorTransition {
   0% { stroke: #468BFF; }
@@ -678,6 +691,7 @@ function App() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          "X-API-Key": getApiKey()
         },
         body: JSON.stringify(requestData),
       }).catch((error) => {
@@ -724,6 +738,7 @@ function App() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-API-Key': getApiKey()
         },
         body: JSON.stringify({
           report_content: output.details.report,
