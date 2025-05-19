@@ -27,6 +27,8 @@ class Briefing:
         company = context.get('company', 'Unknown')
         industry = context.get('industry', 'Unknown')
         hq_location = context.get('hq_location', 'Unknown')
+        language = context.get('language', 'en')
+        prefix = "回答は日本語でお願いします。" if language == 'ja' else ""
         logger.info(f"Generating {category} briefing for {company} using {len(docs)} documents")
 
         # Send category start status
@@ -44,7 +46,7 @@ class Briefing:
                 )
 
         prompts = {
-            'company': f"""Create a focused company briefing for {company}, a {industry} company based in {hq_location}.
+            'company': f"""{prefix}Create a focused company briefing for {company}, a {industry} company based in {hq_location}.
 Key requirements:
 1. Start with: "{company} is a [what] that [does what] for [whom]"
 2. Structure using these exact headers and bullet points:
@@ -75,7 +77,7 @@ Key requirements:
 5. No paragraphs, only bullet points
 6. Provide only the briefing. No explanations or commentary.""",
 
-            'industry': f"""Create a focused industry briefing for {company}, a {industry} company based in {hq_location}.
+            'industry': f"""{prefix}Create a focused industry briefing for {company}, a {industry} company based in {hq_location}.
 Key requirements:
 1. Structure using these exact headers and bullet points:
 
@@ -101,7 +103,7 @@ Key requirements:
 4. Never mention "no information found" or "no data available"
 5. Provide only the briefing. No explanation.""",
 
-            'financial': f"""Create a focused financial briefing for {company}, a {industry} company based in {hq_location}.
+            'financial': f"""{prefix}Create a focused financial briefing for {company}, a {industry} company based in {hq_location}.
 Key requirements:
 1. Structure using these headers and bullet points:
 
@@ -120,7 +122,7 @@ Key requirements:
 6. NEVER include a range of funding amounts. Use your best judgement to determine the exact amount based on the information provided.
 6. Provide only the briefing. No explanation or commentary.""",
 
-            'news': f"""Create a focused news briefing for {company}, a {industry} company based in {hq_location}.
+            'news': f"""{prefix}Create a focused news briefing for {company}, a {industry} company based in {hq_location}.
 Key requirements:
 1. Structure into these categories using bullet points:
 
@@ -222,6 +224,7 @@ Analyze the following documents and extract key information. Provide only the br
             "company": company,
             "industry": state.get('industry', 'Unknown'),
             "hq_location": state.get('hq_location', 'Unknown'),
+            "language": state.get('language', 'en'),
             "websocket_manager": websocket_manager,
             "job_id": job_id
         }

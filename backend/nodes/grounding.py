@@ -127,6 +127,7 @@ class GroundingNode:
             "company_url": state.get('company_url'),
             "hq_location": state.get('hq_location'),
             "industry": state.get('industry'),
+            "language": state.get('language', 'en'),
             # Initialize research fields
             "messages": [AIMessage(content=msg)],
             "site_scrape": site_scrape,

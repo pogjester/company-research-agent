@@ -24,7 +24,8 @@ class Editor:
         self.context = {
             "company": "Unknown Company",
             "industry": "Unknown",
-            "hq_location": "Unknown"
+            "hq_location": "Unknown",
+            "language": "en"
         }
 
     async def compile_briefings(self, state: ResearchState) -> ResearchState:
@@ -35,7 +36,8 @@ class Editor:
         self.context = {
             "company": company,
             "industry": state.get('industry', 'Unknown'),
-            "hq_location": state.get('hq_location', 'Unknown')
+            "hq_location": state.get('hq_location', 'Unknown'),
+            "language": state.get('language', 'en')
         }
         
         # Send initial compilation status
@@ -216,8 +218,12 @@ class Editor:
         company = self.context["company"]
         industry = self.context["industry"]
         hq_location = self.context["hq_location"]
+        language = self.context.get("language", "en")
+        prefix = "この内容は日本語で書き直してください。" if language == "ja" else ""
+        language = self.context.get("language", "en")
+        prefix = "レポートは日本語で作成してください。" if language == "ja" else ""
         
-        prompt = f"""You are compiling a comprehensive research report about {company}.
+        prompt = f"""{prefix}You are compiling a comprehensive research report about {company}.
 
 Compiled briefings:
 {combined_content}
@@ -281,7 +287,7 @@ Return the report in clean markdown format. No explanations or commentary."""
         industry = self.context["industry"]
         hq_location = self.context["hq_location"]
         
-        prompt = f"""You are an expert briefing editor. You are given a report on {company}.
+        prompt = f"""{prefix}You are an expert briefing editor. You are given a report on {company}.
 
 Current report:
 {content}

@@ -36,6 +36,7 @@ class BaseResearcher:
         company = state.get("company", "Unknown Company")
         industry = state.get("industry", "Unknown Industry")
         hq = state.get("hq", "Unknown HQ")
+        language = state.get("language", "en")
         current_year = datetime.now().year
         websocket_manager = state.get('websocket_manager')
         job_id = state.get('job_id')
@@ -48,11 +49,11 @@ class BaseResearcher:
                 messages=[
                     {
                         "role": "system",
-                        "content": f"You are researching {company}, a company in the {industry} industry."
+                        "content": f"You are researching {company}, a company in the {industry} industry. Respond in {'Japanese' if language == 'ja' else 'English'}."
                     },
                     {
                         "role": "user",
-                        "content": f"""Researching {company} on {datetime.now().strftime("%B %d, %Y")}.
+                        "content": f"""Researching {company} on {datetime.now().strftime('%B %d, %Y')}.
 {self._format_query_prompt(prompt, company, hq, current_year)}"""
                     }
                 ],

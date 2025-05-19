@@ -31,6 +31,7 @@ document.head.appendChild(dmSansStyleElement);
 function App() {
 
   const [isResearching, setIsResearching] = useState(false);
+  const [language, setLanguage] = useState<'en' | 'ja'>('en');
   const [status, setStatus] = useState<ResearchStatusType | null>(null);
   const [output, setOutput] = useState<ResearchOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -626,6 +627,7 @@ function App() {
         company_url: formattedCompanyUrl,
         industry: formData.companyIndustry || undefined,
         hq_location: formData.companyHq || undefined,
+        language,
       };
 
       const response = await fetch(url, {
@@ -803,6 +805,7 @@ function App() {
           onToggleExpand={() => setIsQueriesExpanded(!isQueriesExpanded)}
           isResetting={isResetting}
           glassStyle={glassStyle.base}
+          language={language}
         />
       );
     }
@@ -824,14 +827,15 @@ function App() {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(70,139,255,0.35)_1px,transparent_0)] bg-[length:24px_24px] bg-center"></div>
       <div className="max-w-5xl mx-auto space-y-8 relative">
         {/* Header Component */}
-        <Header glassStyle={glassStyle.card} />
+        <Header glassStyle={glassStyle.card} language={language} onLanguageChange={setLanguage} />
 
         {/* Form Section */}
-        <ResearchForm 
+        <ResearchForm
           onSubmit={handleFormSubmit}
           isResearching={isResearching}
           glassStyle={glassStyle}
           loaderColor={loaderColor}
+          language={language}
         />
 
         {/* Error Message */}

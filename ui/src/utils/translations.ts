@@ -1,0 +1,30 @@
+export const translations = {
+  en: {
+    title: "Company Research Agent",
+    tagline: "Conduct in-depth company diligence powered by Tavily",
+    companyName: "Company Name",
+    companyUrl: "Company URL",
+    companyHq: "Company HQ",
+    companyIndustry: "Company Industry",
+    placeholderName: "Enter company name",
+    placeholderUrl: "example.com",
+    placeholderIndustry: "e.g. Technology, Healthcare",
+    startResearch: "Start Research",
+    researching: "Researching...",
+    generatedQueries: "Generated Research Queries",
+  },
+  ja: {
+    title: "企業調査エージェント",
+    tagline: "Tavily が支える詳細な企業調査",
+    companyName: "企業名",
+    companyUrl: "企業URL",
+    companyHq: "本社所在地",
+    companyIndustry: "業界",
+    placeholderName: "企業名を入力",
+    placeholderUrl: "example.com",
+    placeholderIndustry: "例: テクノロジー、ヘルスケア",
+    startResearch: "調査開始",
+    researching: "調査中...",
+    generatedQueries: "生成された調査クエリ",
+  }
+} as const;

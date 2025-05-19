@@ -6,29 +6,20 @@ GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Version comparison function
+# Version comparison function (for Node check)
 version_compare() {
     echo "$@" | awk -F. '{ printf("%d%03d%03d%03d\n", $1,$2,$3,$4); }'
 }
 
 echo -e "${BOLD}🚀 Welcome to the Agentic Company Researcher Setup!${NC}\n"
 
-# Check if Python 3.11+ is installed
-echo -e "${BLUE}Checking Python version...${NC}"
-if command -v python3 >/dev/null 2>&1; then
-    python_version=$(python3 -c 'import sys; print(".".join(map(str, sys.version_info[:2])))')
-    if [ "$(version_compare "$python_version")" -ge "$(version_compare "3.11")" ]; then
-        echo -e "${GREEN}✓ Python $python_version is installed${NC}"
-    else
-        echo "❌ Python 3.11 or higher is required. Current version: $python_version"
-        echo "Please install Python 3.11 or higher from https://www.python.org/downloads/"
-        exit 1
-    fi
-else
-    echo "❌ Python 3 is not installed"
-    echo "Please install Python 3.11 or higher from https://www.python.org/downloads/"
+# Ensure uv package manager is available
+if ! command -v uv >/dev/null 2>&1; then
+    echo "❌ uv is required but not installed."
+    echo "Install uv from https://astral.sh/uv/"
     exit 1
 fi
+echo -e "${BLUE}Using uv for Python execution${NC}"
 
 # Check if Node.js 18+ is installed
 echo -e "\n${BLUE}Checking Node.js version...${NC}"
@@ -51,16 +42,17 @@ fi
 echo -e "\n${BLUE}Would you like to set up a Python virtual environment? (Recommended) [Y/n]${NC}"
 read -r use_venv
 use_venv=${use_venv:-Y}
+echo -e "${BLUE}Using uv for dependency management${NC}"
 
 if [[ $use_venv =~ ^[Yy]$ ]]; then
     echo -e "\n${BLUE}Setting up Python virtual environment...${NC}"
-    python3 -m venv .venv
+    uv venv .venv
     source .venv/bin/activate
     echo -e "${GREEN}✓ Virtual environment created and activated${NC}"
-    
+
     # Install Python dependencies in venv
     echo -e "\n${BLUE}Installing Python dependencies in virtual environment...${NC}"
-    pip install -r requirements.txt
+    uv pip install -r requirements.txt
     echo -e "${GREEN}✓ Python dependencies installed${NC}"
 else
     # Prompt for global installation
@@ -70,12 +62,12 @@ else
 
     if [[ $install_global =~ ^[Yy]$ ]]; then
         echo -e "\n${BLUE}Installing Python dependencies globally...${NC}"
-        pip3 install -r requirements.txt
+        uv pip install -r requirements.txt
         echo -e "${GREEN}✓ Python dependencies installed${NC}"
         echo -e "${BLUE}Note: Dependencies have been installed in your global Python environment${NC}"
     else
         echo -e "${BLUE}Skipping Python dependency installation. You'll need to install them manually later.${NC}"
-        echo -e "${BLUE}You can do this by running: pip install -r requirements.txt${NC}"
+        echo -e "${BLUE}You can do this by running: uv pip install -r requirements.txt${NC}"
     fi
 fi
 
@@ -145,17 +137,17 @@ start_servers=${start_servers:-Y}
 
 if [[ $start_servers =~ ^[Yy]$ ]]; then
     echo -e "\n${BLUE}Choose backend server option:${NC}"
-    echo "1) python -m application.py"
-    echo "2) uvicorn application:app --reload --port 8000"
+    echo "1) uv run python -m application.py"
+    echo "2) uv run uvicorn application:app --reload --port 8000"
     read -r backend_choice
 
     # Start backend server in background
     if [ "$backend_choice" = "1" ]; then
-        echo -e "\n${GREEN}Starting backend server with python...${NC}"
-        python -m application.py &
+        echo -e "\n${GREEN}Starting backend server with uv...${NC}"
+        uv run python -m application.py &
     else
         echo -e "\n${GREEN}Starting backend server with uvicorn...${NC}"
-        uvicorn application:app --reload --port 8000 &
+        uv run uvicorn application:app --reload --port 8000 &
     fi
     
     # Store backend PID
@@ -183,8 +175,8 @@ if [[ $start_servers =~ ^[Yy]$ ]]; then
 else
     echo -e "\n${BOLD}To start the application manually:${NC}"
     echo -e "\n1. Start the backend server (choose one):"
-    echo "   Option 1: python -m application.py"
-    echo "   Option 2: uvicorn application:app --reload --port 8000"
+    echo "   Option 1: uv run python -m application.py"
+    echo "   Option 2: uv run uvicorn application:app --reload --port 8000"
     echo -e "\n2. In a new terminal, start the frontend:"
     echo "   cd ui"
     echo "   npm run dev"

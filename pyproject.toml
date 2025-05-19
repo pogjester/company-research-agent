@@ -1,0 +1,21 @@
+[project]
+name = "company-research-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "certifi==2025.1.31",
+    "fastapi==0.115.11",
+    "google-generativeai==0.8.4",
+    "langchain-core==0.3.41",
+    "langgraph==0.3.5",
+    "openai==1.65.4",
+    "protobuf~=4.25.0",
+    "pydantic==2.10.6",
+    "pymongo==4.6.3",
+    "reportlab==4.3.1",
+    "tavily-python==0.5.1",
+    "uvicorn[standard]==0.34.0",
+    "websockets==12.0",
+]
