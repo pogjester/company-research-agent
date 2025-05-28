@@ -7,6 +7,7 @@ class InputState(TypedDict, total=False):
     company_url: NotRequired[str]
     hq_location: NotRequired[str]
     industry: NotRequired[str]
+    language: NotRequired[str]
     websocket_manager: NotRequired[WebSocketManager]
     job_id: NotRequired[str]
 
@@ -28,3 +29,4 @@ class ResearchState(InputState):
     references: List[str]
     briefings: Dict[str, Any]
     report: str
+

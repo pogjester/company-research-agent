@@ -142,7 +142,7 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-安装脚本将：
+安装脚本将（如果检测到 `uv` 会自动使用）：
 - 检查所需的Python和Node.js版本
 - 可选创建Python虚拟环境（推荐）
 - 安装所有依赖（Python和Node.js）
@@ -167,12 +167,19 @@ cd tavily-company-research
 
 2. 安装后端依赖：
 ```bash
-# 可选：创建并激活虚拟环境
-python -m venv .venv
+# 可选：安装 `uv` 包管理器，加快依赖安装
+curl -Ls https://astral.sh/uv/install.sh | sh
+
+# 创建并激活使用 uv 的虚拟环境
+uv venv .venv
 source .venv/bin/activate
 
-# 安装Python依赖
-pip install -r requirements.txt
+# 安装 Python 依赖
+uv pip install -r requirements.txt
+
+# 也可以使用标准的 Python 工具：
+# python -m venv .venv
+# pip install -r requirements.txt
 ```
 
 3. 安装前端依赖：
@@ -234,11 +241,11 @@ docker compose down && docker compose up
 
 1. 启动后端服务器（选择一种方式）：
 ```bash
-# 选项1：直接Python模块
-python -m application.py
+# 选项1：直接Python模块（使用 uv）
+uv run python -m application.py
 
 # 选项2：使用Uvicorn的FastAPI
-uvicorn application:app --reload --port 8000
+uv run uvicorn application:app --reload --port 8000
 ```
 
 2. 在新终端中启动前端：
@@ -255,18 +262,18 @@ npm run dev
 
 1. 启动后端服务器（选择一个选项）：
 
-   **选项1：直接Python模块**
+   **选项1：直接Python模块（使用 uv）**
    ```bash
-   python -m application.py
+   uv run python -m application.py
    ```
 
    **选项2：使用Uvicorn的FastAPI**
    ```bash
    # 如果尚未安装，安装uvicorn
-   pip install uvicorn
+   uv pip install uvicorn
 
    # 使用热重载运行FastAPI应用
-   uvicorn application:app --reload --port 8000
+   uv run uvicorn application:app --reload --port 8000
    ```
 
    后端将在以下位置可用：
@@ -289,7 +296,7 @@ npm run dev
 
 1. 安装EB CLI：
    ```bash
-   pip install awsebcli
+   uv pip install awsebcli
    ```
 
 2. 初始化EB应用：

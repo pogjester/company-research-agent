@@ -1,14 +1,16 @@
 import React from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { ResearchQueriesProps } from '../types';
+import { translations } from '../utils/translations';
 
-const ResearchQueries: React.FC<ResearchQueriesProps> = ({
+const ResearchQueries: React.FC<ResearchQueriesProps & { language: 'en' | 'ja' }> = ({
   queries,
   streamingQueries,
   isExpanded,
   onToggleExpand,
   isResetting,
-  glassStyle
+  glassStyle,
+  language
 }) => {
   const glassCardStyle = `${glassStyle} rounded-2xl p-6`;
   const fadeInAnimation = "transition-all duration-300 ease-in-out";
@@ -22,7 +24,7 @@ const ResearchQueries: React.FC<ResearchQueriesProps> = ({
         onClick={onToggleExpand}
       >
         <h2 className="text-xl font-semibold text-gray-900">
-          Generated Research Queries
+          {translations[language].generatedQueries}
         </h2>
         <button className="text-gray-600 hover:text-gray-900 transition-colors">
           {isExpanded ? (
@@ -68,7 +70,7 @@ const ResearchQueries: React.FC<ResearchQueriesProps> = ({
       
       {!isExpanded && (
         <div className="mt-2 text-sm text-gray-600">
-          {queries.length} queries generated across {['company', 'industry', 'financial', 'news'].length} categories
+          {queries.length} {language === 'ja' ? '件のクエリが生成されました' : 'queries generated'}
         </div>
       )}
     </div>
@@ -76,3 +78,4 @@ const ResearchQueries: React.FC<ResearchQueriesProps> = ({
 };
 
 export default ResearchQueries; 
+

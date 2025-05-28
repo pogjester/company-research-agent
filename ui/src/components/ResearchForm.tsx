@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { translations } from '../utils/translations';
 import { Building2, Factory, Globe, Loader2, Search } from 'lucide-react';
 import LocationInput from './LocationInput';
 import ExamplePopup, { ExampleCompany } from './ExamplePopup';
@@ -18,13 +19,15 @@ interface ResearchFormProps {
     input: string;
   };
   loaderColor: string;
+  language: 'en' | 'ja';
 }
 
 const ResearchForm: React.FC<ResearchFormProps> = ({
   onSubmit,
   isResearching,
   glassStyle,
-  loaderColor
+  loaderColor,
+  language
 }) => {
   const [formData, setFormData] = useState<FormData>({
     companyName: "",
@@ -138,7 +141,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                 htmlFor="companyName"
                 className="block text-base font-medium text-gray-700 mb-2.5 transition-all duration-200 group-hover:text-gray-900 font-['DM_Sans']"
               >
-                Company Name <span className="text-gray-900/70">*</span>
+                {translations[language].companyName} <span className="text-gray-900/70">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50/0 via-gray-100/50 to-gray-50/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
@@ -155,7 +158,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                     }))
                   }
                   className={`${glassStyle.input} transition-all duration-300 focus:border-[#468BFF]/50 focus:ring-1 focus:ring-[#468BFF]/50 group-hover:border-[#468BFF]/30 bg-white/80 backdrop-blur-sm text-lg py-4 pl-12 font-['DM_Sans']`}
-                  placeholder="Enter company name"
+                  placeholder={translations[language].placeholderName}
                 />
               </div>
             </div>
@@ -166,7 +169,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                 htmlFor="companyUrl"
                 className="block text-base font-medium text-gray-700 mb-2.5 transition-all duration-200 group-hover:text-gray-900 font-['DM_Sans']"
               >
-                Company URL
+                {translations[language].companyUrl}
               </label>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50/0 via-gray-100/50 to-gray-50/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
@@ -182,7 +185,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                     }))
                   }
                   className={`${glassStyle.input} transition-all duration-300 focus:border-[#468BFF]/50 focus:ring-1 focus:ring-[#468BFF]/50 group-hover:border-[#468BFF]/30 bg-white/80 backdrop-blur-sm text-lg py-4 pl-12 font-['DM_Sans']`}
-                  placeholder="example.com"
+                  placeholder={translations[language].placeholderUrl}
                 />
               </div>
             </div>
@@ -193,7 +196,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                 htmlFor="companyHq"
                 className="block text-base font-medium text-gray-700 mb-2.5 transition-all duration-200 group-hover:text-gray-900 font-['DM_Sans']"
               >
-                Company HQ
+                {translations[language].companyHq}
               </label>
               <LocationInput
                 value={formData.companyHq}
@@ -213,7 +216,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                 htmlFor="companyIndustry"
                 className="block text-base font-medium text-gray-700 mb-2.5 transition-all duration-200 group-hover:text-gray-900 font-['DM_Sans']"
               >
-                Company Industry
+                {translations[language].companyIndustry}
               </label>
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-50/0 via-gray-100/50 to-gray-50/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"></div>
@@ -229,7 +232,7 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
                     }))
                   }
                   className={`${glassStyle.input} transition-all duration-300 focus:border-[#468BFF]/50 focus:ring-1 focus:ring-[#468BFF]/50 group-hover:border-[#468BFF]/30 bg-white/80 backdrop-blur-sm text-lg py-4 pl-12 font-['DM_Sans']`}
-                  placeholder="e.g. Technology, Healthcare"
+                  placeholder={translations[language].placeholderIndustry}
                 />
               </div>
             </div>
@@ -245,12 +248,12 @@ const ResearchForm: React.FC<ResearchFormProps> = ({
               {isResearching ? (
                 <>
                   <Loader2 className="animate-spin -ml-1 mr-2 h-5 w-5 loader-icon" style={{ stroke: loaderColor }} />
-                  <span className="text-base font-medium text-gray-900/90">Researching...</span>
+                  <span className="text-base font-medium text-gray-900/90">{translations[language].researching}</span>
                 </>
               ) : (
                 <>
                   <Search className="-ml-1 mr-2 h-5 w-5 text-gray-900/90" />
-                  <span className="text-base font-medium text-gray-900/90">Start Research</span>
+                  <span className="text-base font-medium text-gray-900/90">{translations[language].startResearch}</span>
                 </>
               )}
             </div>

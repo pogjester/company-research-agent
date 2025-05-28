@@ -65,6 +65,7 @@ class ResearchRequest(BaseModel):
     company_url: str | None = None
     industry: str | None = None
     hq_location: str | None = None
+    language: str | None = "en"
 
 class PDFGenerationRequest(BaseModel):
     report_content: str
@@ -113,6 +114,7 @@ async def process_research(job_id: str, data: ResearchRequest):
             url=data.company_url,
             industry=data.industry,
             hq_location=data.hq_location,
+            language=data.language,
             websocket_manager=manager,
             job_id=job_id
         )

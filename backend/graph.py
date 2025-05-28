@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 class Graph:
     def __init__(self, company=None, url=None, hq_location=None, industry=None,
-                 websocket_manager=None, job_id=None):
+                 language="en", websocket_manager=None, job_id=None):
         self.websocket_manager = websocket_manager
         self.job_id = job_id
         
@@ -32,6 +32,7 @@ class Graph:
             company_url=url,
             hq_location=hq_location,
             industry=industry,
+            language=language,
             websocket_manager=websocket_manager,
             job_id=job_id,
             messages=[

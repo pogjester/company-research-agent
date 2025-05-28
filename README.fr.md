@@ -128,7 +128,7 @@ La plateforme implémente un système de communication en temps réel basé sur 
 
 ### Configuration Rapide (Recommandée)
 
-La façon la plus simple de commencer est d'utiliser le script de configuration :
+La façon la plus simple de commencer est d'utiliser le script de configuration (il utilise `uv` automatiquement s'il est disponible) :
 
 1. Clonez le dépôt :
 ```bash
@@ -167,12 +167,19 @@ cd tavily-company-research
 
 2. Installez les dépendances backend :
 ```bash
-# Optionnel : Créez et activez un environnement virtuel
-python -m venv .venv
+# Optionnel : installez le gestionnaire de paquets `uv`
+curl -Ls https://astral.sh/uv/install.sh | sh
+
+# Créez et activez un environnement virtuel avec uv
+uv venv .venv
 source .venv/bin/activate
 
 # Installez les dépendances Python
-pip install -r requirements.txt
+uv pip install -r requirements.txt
+
+# Vous pouvez également utiliser les outils Python standards :
+# python -m venv .venv
+# pip install -r requirements.txt
 ```
 
 3. Installez les dépendances frontend :
@@ -234,11 +241,11 @@ docker compose down && docker compose up
 
 1. Démarrez le serveur backend (choisissez une option) :
 ```bash
-# Option 1 : Module Python Direct
-python -m application.py
+# Option 1 : Module Python Direct (avec uv)
+uv run python -m application.py
 
 # Option 2 : FastAPI avec Uvicorn
-uvicorn application:app --reload --port 8000
+uv run uvicorn application:app --reload --port 8000
 ```
 
 2. Dans un nouveau terminal, démarrez le frontend :
@@ -255,18 +262,18 @@ npm run dev
 
 1. Démarrez le serveur backend (choisissez une option) :
 
-   **Option 1 : Module Python Direct**
+   **Option 1 : Module Python Direct (avec uv)**
    ```bash
-   python -m application.py
+   uv run python -m application.py
    ```
 
    **Option 2 : FastAPI avec Uvicorn**
    ```bash
    # Installez uvicorn si ce n'est pas déjà fait
-   pip install uvicorn
+   uv pip install uvicorn
 
    # Exécutez l'application FastAPI avec rechargement à chaud
-   uvicorn application:app --reload --port 8000
+   uv run uvicorn application:app --reload --port 8000
    ```
 
    Le backend sera disponible sur :
@@ -289,7 +296,7 @@ L'application peut être déployée sur diverses plateformes cloud. Voici quelqu
 
 1. Installez l'EB CLI :
    ```bash
-   pip install awsebcli
+   uv pip install awsebcli
    ```
 
 2. Initialisez l'application EB :

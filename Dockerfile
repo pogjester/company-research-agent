@@ -9,8 +9,12 @@ RUN npm run build
 # Stage 2: Build Backend
 FROM python:3.11-slim AS backend-builder
 WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+RUN curl -Ls https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN uv pip install --no-cache-dir -r requirements.txt
 
 # Stage 3: Final Image
 FROM python:3.11-slim
@@ -20,6 +24,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     && rm -rf /var/lib/apt/lists/*
+RUN curl -Ls https://astral.sh/uv/install.sh | sh
+ENV PATH="/root/.local/bin:$PATH"
 
 # Copy backend
 COPY --from=backend-builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
@@ -45,4 +51,4 @@ RUN chown -R appuser:appuser /app
 USER appuser
 
 # Start command
-CMD ["python", "-m", "uvicorn", "application:app", "--host", "0.0.0.0", "--port", "8000"] 
+CMD ["uv", "run", "python", "-m", "uvicorn", "application:app", "--host", "0.0.0.0", "--port", "8000"]

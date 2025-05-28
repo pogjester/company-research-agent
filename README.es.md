@@ -141,7 +141,7 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-El script de instalación hará lo siguiente:
+El script de instalación hará lo siguiente (usará `uv` automáticamente si está instalado):
 - Verificar las versiones requeridas de Python y Node.js
 - Opcionalmente crear un entorno virtual de Python (recomendado)
 - Instalar todas las dependencias (Python y Node.js)
@@ -167,11 +167,18 @@ cd tavily-company-research
 2. Instalar dependencias de backend:
 ```bash
 # Opcional: Crear y activar entorno virtual
-python -m venv .venv
+curl -Ls https://astral.sh/uv/install.sh | sh
+
+# Crear y activar un entorno virtual con uv
+uv venv .venv
 source .venv/bin/activate
 
 # Instalar dependencias de Python
-pip install -r requirements.txt
+uv pip install -r requirements.txt
+
+# Alternativamente, puedes usar las herramientas estándar de Python:
+# python -m venv .venv
+# pip install -r requirements.txt
 ```
 
 3. Instalar dependencias de frontend:
@@ -233,11 +240,11 @@ docker compose down && docker compose up
 
 1. Iniciar el servidor de backend (elige una opción):
 ```bash
-# Opción 1: Módulo Python Directo
-python -m application.py
+# Opción 1: Módulo Python Directo (usando uv)
+uv run python -m application.py
 
 # Opción 2: FastAPI con Uvicorn
-uvicorn application:app --reload --port 8000
+uv run uvicorn application:app --reload --port 8000
 ```
 
 2. En una nueva terminal, iniciar el frontend:
@@ -254,18 +261,18 @@ npm run dev
 
 1. Iniciar el servidor de backend (elige una opción):
 
-   **Opción 1: Módulo Python Directo**
+   **Opción 1: Módulo Python Directo (usando uv)**
    ```bash
-   python -m application.py
+   uv run python -m application.py
    ```
 
    **Opción 2: FastAPI con Uvicorn**
    ```bash
    # Instalar uvicorn si aún no está instalado
-   pip install uvicorn
+   uv pip install uvicorn
 
    # Ejecutar la aplicación FastAPI con recarga automática
-   uvicorn application:app --reload --port 8000
+   uv run uvicorn application:app --reload --port 8000
    ```
 
    El backend estará disponible en:
@@ -288,7 +295,7 @@ La aplicación puede desplegarse en varias plataformas en la nube. Aquí hay alg
 
 1. Instalar el EB CLI:
    ```bash
-   pip install awsebcli
+   uv pip install awsebcli
    ```
 
 2. Inicializar la aplicación EB:
